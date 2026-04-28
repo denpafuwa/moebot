@@ -1,0 +1,5 @@
+John: Hello world!
+$bg this
+$bgm that
+$sound okay
+$close

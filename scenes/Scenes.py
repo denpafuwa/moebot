@@ -1,0 +1,26 @@
+from engine.core import Scene, Mouse, FontLoader
+from engine.graphics import Text, TypewriterText, Quad
+from pyray import *
+
+class InitScene(Scene):
+    def init(self):
+        FontLoader.font_jp("assets/ark-pixel.ttf")
+        text = Text(20, 20, "This is the initial scene!")
+        text2 = TypewriterText(20, 60, "Hello, world! This is the typewriter text.", font_path="assets/ark-pixel.ttf", tag="lol")
+        text2.spacing = 0
+        text2.prefix = "OUTPUT - アウトプット: "
+        self.add(text)
+        self.add(text2)
+        quad = Quad(0, 0, get_screen_width(), get_screen_height(), 0, Color(25, 177, 98, 255//2))
+        self.add(quad)
+    
+    def update(self, delta):
+        text2: TypewriterText = self.get("lol")
+        if is_key_pressed(KeyboardKey.KEY_ENTER) and (text2.done or not text2.typing):
+            text = self.get("Text")
+            text.text = "Enter pressed!"
+            text2.set_text("Congrats on pressing enter! - ENTER押しておめでとう!")
+            text2.type()
+
+        
+        super().update(delta)
