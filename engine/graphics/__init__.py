@@ -1,4 +1,5 @@
 from ..core import *
+import math
 
 class Quad(GameObject):
     def __init__(self, x=0, y=0, width=1, height=1, rotation=0, color=WHITE, tag="GameObject"):
@@ -45,13 +46,39 @@ class Text(GameObject):
         self.spacing = 2
         self.color = color
         self.visible = True
+        self.wavy = False
+        self.time_offset = 0
+        self.frequency = 0.4
+        self.amplitude = 15
+        self.wavy_line_spacing = 1.5
     
+    def enable_wave_effect(self, frequency, amplitude):
+        self.frequency = frequency
+        self.amplitude = amplitude
+        self.wavy = True
+    
+    def disable_wave_effect(self):
+        self.wavy = False
+
     def update(self, delta):
+        self.time_offset += delta
         self.size = self.get_measurements()
 
     def draw(self):
         if self.visible:
-            draw_text_ex(self.font, self.text, self.position, self.font_size, self.spacing, WHITE)
+            if self.wavy:
+                char_x = self.position.x
+                char_y = self.position.y
+                for i, char in enumerate(self.text):
+                    if char == '\n':
+                        char_y += self.font_size + self.wavy_line_spacing
+                        char_x = self.position.x
+                    wave_offset = math.sin(self.time_offset + i * self.frequency) * self.amplitude
+                    draw_text_ex(self.font, char, Vector2(char_x, char_y + wave_offset), self.font_size, self.spacing, self.color)
+                    measured = measure_text_ex(self.font, char, self.font_size, self.spacing)
+                    char_x += measured.x + self.spacing
+            else:
+                draw_text_ex(self.font, self.text, self.position, self.font_size, self.spacing, self.color)
 
     def get_measurements(self):
         return measure_text_ex(self.font, self.text, self.font_size, self.spacing)
@@ -86,5 +113,5 @@ class TypewriterText(Text):
                 self.text = self.prefix + self.final_text[0:self.carat]
                 self.timer = 0
         self.done = self.text == self.prefix + self.final_text
-        self.typing = not (self.carat == len(self.final_text) - 1)
+        self.typing = not (self.carat == len(self.final_text))
     
