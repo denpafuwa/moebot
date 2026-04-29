@@ -74,6 +74,53 @@ class GameObject:
     def unload(self):
         pass
 
+class SoundObject(GameObject):
+    
+    def __init__(self, path, tag="Sound"):
+        super().__init__(0, 0, 1, 1, tag)
+        self.sound_object = load_sound(path)
+    
+    def play(self):
+        play_sound(self.sound_object)
+
+    def resume(self):
+        resume_sound(self.sound_object)
+
+    def pause(self):
+        pause_sound(self.sound_object)
+    
+    def update(self, delta):
+        pass
+
+    def draw(self):
+        pass
+    
+    def unload(self):
+        unload_sound(self.sound_object)
+
+class MusicObject(GameObject):
+    def __init__(self, path, tag="Music"):
+        super().__init__(0, 0, 1, 1, tag)
+        self.music_object = load_music_stream(path)
+
+    def play(self):
+        play_music_stream(self.music_object)
+
+    def resume(self):
+        resume_music_stream(self.music_object)
+
+    def pause(self):
+        pause_music_stream(self.music_object)
+    
+    def update(self, delta):
+        update_music_stream(self.music_object)
+
+    def draw(self):
+        pass
+
+    def unload(self):
+        unload_music_stream(self.music_object)
+
 class FontLoader:
 
     fonts: dict[str, Font] = dict[str, Font]()

@@ -5,6 +5,7 @@ from dialogue import *
 
 
 init_window(800, 600, "Moe Robot!")
+init_audio_device()
 
 preloaded = False
 
@@ -16,15 +17,16 @@ with open("assets/data/test.txt") as f:
     parsed = DialogueParser.parse(content)
     for p in parsed:
         print('EV:', p.event, '\nDATA:', p.data)
-
 while not window_should_close():
 
     Game.cur_scene.update(get_frame_time())
-
     begin_drawing()
     begin_mode_2d(Game.cur_scene.camera)
     clear_background(BLACK)
     Game.cur_scene.draw()
     end_mode_2d()
     end_drawing()
+
 Game.cur_scene.unload()
+close_audio_device()
+close_window()
