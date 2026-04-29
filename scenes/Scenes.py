@@ -1,12 +1,9 @@
-from engine.core import Scene, Mouse, FontLoader, MusicObject, SoundObject
+from engine.core import Scene, Mouse, FontLoader, SoundObject, Game
 from engine.graphics import Text, TypewriterText, Quad
 from pyray import *
 
 class InitScene(Scene):
     def init(self):
-        music = MusicObject("assets/Morning.mp3")
-        self.add(music)
-        music.play()
         FontLoader.font("assets/ark-pixel.ttf")
         text = Text(20, 20, "This is the initial scene!\nWelcome to the NHK!")
         text.enable_wave_effect(.1, 5)
@@ -19,6 +16,8 @@ class InitScene(Scene):
         self.add(text2)
         quad = Quad(0, 0, get_screen_width(), get_screen_height(), 0, Color(25, 177, 98, 255//2))
         self.add(quad)
+        Game.load_music("assets/Morning.mp3")
+        Game.play_music()
     
     def update(self, delta):
         text2: TypewriterText = self.get("lol")

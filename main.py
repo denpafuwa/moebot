@@ -20,6 +20,7 @@ with open("assets/data/test.txt") as f:
 while not window_should_close():
 
     Game.cur_scene.update(get_frame_time())
+    Game.update_music()
     begin_drawing()
     begin_mode_2d(Game.cur_scene.camera)
     clear_background(BLACK)

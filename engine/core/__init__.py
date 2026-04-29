@@ -2,12 +2,34 @@ from pyray import *
 
 class Game:
     cur_scene = None
+    cur_music = None
 
     def switch_scene(scene: Scene):
         if Game.cur_scene is not None:
             scene.unload()
         Game.cur_scene = scene
         scene.init()
+
+    def load_music(path):
+        if Game.cur_music is not None:
+            Game.unload_music()
+        Game.cur_music = load_music_stream(path)
+
+    def play_music():
+        play_music_stream(Game.cur_music)
+
+    def resume_music():
+        resume_music_stream(Game.cur_music)
+
+    def pause_music():
+        pause_music_stream(Game.cur_music)
+    
+    def update_music():
+        if Game.cur_music is not None:
+            update_music_stream(Game.cur_music)
+
+    def unload_music():
+        unload_music_stream(Game.cur_music)
 
 class Mouse:
     def overlaps(obj: GameObject):
@@ -97,29 +119,6 @@ class SoundObject(GameObject):
     
     def unload(self):
         unload_sound(self.sound_object)
-
-class MusicObject(GameObject):
-    def __init__(self, path, tag="Music"):
-        super().__init__(0, 0, 1, 1, tag)
-        self.music_object = load_music_stream(path)
-
-    def play(self):
-        play_music_stream(self.music_object)
-
-    def resume(self):
-        resume_music_stream(self.music_object)
-
-    def pause(self):
-        pause_music_stream(self.music_object)
-    
-    def update(self, delta):
-        update_music_stream(self.music_object)
-
-    def draw(self):
-        pass
-
-    def unload(self):
-        unload_music_stream(self.music_object)
 
 class FontLoader:
 
